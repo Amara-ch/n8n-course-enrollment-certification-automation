@@ -1,0 +1,630 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1i9SxxUcQJgiPaPRmZxJUpA5Gd0SCtNimefYpfX0MjtE",
+          "mode": "list",
+          "cachedResultName": "student Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1i9SxxUcQJgiPaPRmZxJUpA5Gd0SCtNimefYpfX0MjtE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1972321244,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1i9SxxUcQJgiPaPRmZxJUpA5Gd0SCtNimefYpfX0MjtE/edit#gid=1972321244"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -912,
+        -320
+      ],
+      "id": "ee2fd7fd-9795-40ea-b118-8c9dbb3a351a",
+      "name": "Responses (new)",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "7QDopsJXeDzO7BUN",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc",
+          "mode": "list",
+          "cachedResultName": "STUDENT DATA TRCAK",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $json.Email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        -320
+      ],
+      "id": "3e4dc523-7ddb-43c3-acae-5a7fb1560095",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a6XNf9rh3QD2SUn6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "58c6f934-f1a7-4fa7-b4a9-b2c3eb88b541",
+              "leftValue": "={{ $json.eligibility }}",
+              "rightValue": "eligible",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        -496
+      ],
+      "id": "40f20dad-39d8-4eba-9cd2-f49e52f0ed9d",
+      "name": "Eligible/Not"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Responses (new)').item.json.Email }}",
+        "subject": "Final Result Exam N8n",
+        "message": "={{ $json.emailHtmlBody }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Amara Academy"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        -256
+      ],
+      "id": "5cbc0261-0a95-40f6-a266-24ee83179f40",
+      "name": "Final Result To student",
+      "webhookId": "657fc833-5609-4255-ac67-50c6c28f5bb8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - Run Once for All Items\n// Generates a professional HTML email body for exam results\n\nconst results = [];\n\nfor (const item of $input.all()) {\n  const data = item.json;\n\n  const studentName = data['Student name'] || data['Name'] || 'Student';\n  const isPass = data.result === 'PASS';\n\n  const statusColor = isPass ? '#059669' : '#DC2626';\n  const statusBg = isPass ? '#ECFDF5' : '#FEF2F2';\n  const statusBorder = isPass ? '#A7F3D0' : '#FECACA';\n  const statusText = isPass ? 'PASS' : 'FAIL';\n  const headerMsg = isPass ? 'Congratulations! You Passed 🎉' : 'Exam Result';\n\n  const htmlBody = `\n<!DOCTYPE html>\n<html>\n<head><meta charset=\"UTF-8\"></head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <tr>\n            <td style=\"background-color:#111827; padding:40px 30px; text-align:center;\">\n              <p style=\"color:#9CA3AF; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                n8n Course of Automation\n              </p>\n              <h1 style=\"color:#ffffff; font-size:26px; margin:0; font-weight:700;\">\n                ${headerMsg}\n              </h1>\n            </td>\n          </tr>\n\n          <tr>\n            <td style=\"padding:35px 40px 10px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>${studentName}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 20px;\">\n                Your certification exam has been graded. Here are your detailed results:\n              </p>\n            </td>\n          </tr>\n\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:${statusBg}; border:1px solid ${statusBorder}; border-radius:10px; padding:25px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:13px; color:${statusColor}; margin:0 0 6px; text-transform:uppercase; letter-spacing:1px; font-weight:700;\">\n                      Result\n                    </p>\n                    <p style=\"font-size:34px; color:${statusColor}; margin:0; font-weight:800;\">\n                      ${statusText}\n                    </p>\n                    <p style=\"font-size:15px; color:#374151; margin:10px 0 0; font-weight:600;\">\n                      Total Score: ${data.total_score} / 25\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <tr>\n            <td style=\"padding:30px 40px 5px;\">\n              <p style=\"font-size:15px; color:#111827; margin:0 0 15px; font-weight:600;\">\n                Question-wise Breakdown:\n              </p>\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n                <tr style=\"background-color:#F9FAFB;\">\n                  <td style=\"padding:10px 12px; font-size:14px; color:#374151; border:1px solid #E5E7EB;\">Q1 - Webhook vs Polling Trigger</td>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#111827; border:1px solid #E5E7EB; text-align:center; font-weight:600;\">${data.q1_score} / 5</td>\n                </tr>\n                <tr>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#374151; border:1px solid #E5E7EB;\">Q2 - Merge Node</td>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#111827; border:1px solid #E5E7EB; text-align:center; font-weight:600;\">${data.q2_score} / 5</td>\n                </tr>\n                <tr style=\"background-color:#F9FAFB;\">\n                  <td style=\"padding:10px 12px; font-size:14px; color:#374151; border:1px solid #E5E7EB;\">Q3 - Data Pinning</td>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#111827; border:1px solid #E5E7EB; text-align:center; font-weight:600;\">${data.q3_score} / 5</td>\n                </tr>\n                <tr>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#374151; border:1px solid #E5E7EB;\">Q4 - On Error Handling</td>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#111827; border:1px solid #E5E7EB; text-align:center; font-weight:600;\">${data.q4_score} / 5</td>\n                </tr>\n                <tr style=\"background-color:#F9FAFB;\">\n                  <td style=\"padding:10px 12px; font-size:14px; color:#374151; border:1px solid #E5E7EB;\">Q5 - Expressions in n8n</td>\n                  <td style=\"padding:10px 12px; font-size:14px; color:#111827; border:1px solid #E5E7EB; text-align:center; font-weight:600;\">${data.q5_score} / 5</td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <tr>\n            <td style=\"padding:30px 40px 10px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#F9FAFB; border:1px solid #E5E7EB; border-radius:10px; padding:22px;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:13px; color:#6B7280; margin:0 0 8px; text-transform:uppercase; letter-spacing:1px; font-weight:700;\">\n                      Feedback\n                    </p>\n                    <p style=\"font-size:14px; color:#374151; margin:0; line-height:1.7;\">\n                      ${data.feedback}\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <tr>\n            <td style=\"padding:30px 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                ${isPass\n                  ? 'Congratulations on passing your certification exam! Your certificate will be issued and sent to you shortly.'\n                  : 'Unfortunately, you did not meet the passing criteria this time. Please review the course material and reach out in the WhatsApp group if you would like guidance on reattempting the exam.'}\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:20px 0 0; font-weight:600;\">\n                ${isPass ? 'Well done, and happy automating! 🚀' : 'Keep learning, and best of luck next time!'}\n              </p>\n            </td>\n          </tr>\n\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This is an automated result email for the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>\n  `;\n\n  results.push({\n    json: {\n      ...data,\n      studentName: studentName,\n      emailSubject: isPass\n        ? `🎉 Congratulations! You Passed the n8n Certification Exam`\n        : `Your n8n Certification Exam Result`,\n      emailHtmlBody: htmlBody\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1616,
+        -256
+      ],
+      "id": "2224dee8-1dfc-4bf7-b487-a050b2a849b3",
+      "name": "optmising result"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - Run Once for All Items\nconst results = [];\nfor (const item of $input.all()) {\n  const rawOutput = item.json.output;\n  let parsed;\n  try {\n    parsed = JSON.parse(rawOutput);\n  } catch (error) {\n    // Fallback in case output isn't valid JSON for some reason\n    parsed = {\n      q1_score: 0,\n      q2_score: 0,\n      q3_score: 0,\n      q4_score: 0,\n      q5_score: 0,\n      total_score: 0,\n      result: \"FAIL\",\n      feedback: \"Could not parse grading result.\"\n    };\n  }\n  const studentData = $('Responses (new)').item.json;\n  results.push({\n    json: {\n      StudentName: studentData['Name'],\n      Email: studentData['Email'],\n      q1_score: parsed.q1_score,\n      q2_score: parsed.q2_score,\n      q3_score: parsed.q3_score,\n      q4_score: parsed.q4_score,\n      q5_score: parsed.q5_score,\n      total_score: parsed.total_score,\n      result: parsed.result,\n      feedback: parsed.feedback\n    }\n  });\n}\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -240
+      ],
+      "id": "c95bf717-bb19-4642-b3df-4ff754cd02ed",
+      "name": "Fetching readble results"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Student Name: {{ $('Responses (new)').item.json.Name }}\nStudent Email: {{ $('Responses (new)').item.json.Email }}\n\nGrade the following student's exam answers:\nQ1 Answer: {{ $('Responses (new)').item.json['Q1. Explain the key difference between a Webhook Trigger and a Polling Trigger in n8n. In which scenario should you prefer one over the other? (5 Marks)  '] }}\nQ2 Answer: {{ $('Responses (new)').item.json['Q2. What is the purpose of the \"Merge Node\" in n8n? Briefly explain any two of its modes (e.g., Append, Keep Key Matches, Multiplex). (5 Marks)  '] }}\nQ3 Answer: {{ $('Responses (new)').item.json['Q3. What is \"Data Pinning\" in n8n, and how does it help a developer during the workflow testing and debugging process? (5 Marks)  '] }}\nQ4 Answer: {{ $('Responses (new)').item.json['Q4. If a node fails during workflow execution, how can you handle the error? Explain the options available under the \"On Error\" settings. (5 Marks)  '] }}\nQ5 Answer: {{ $('Responses (new)').item.json['Q5. What are \"Expressions\" in n8n? Provide a brief syntax example of how you can dynamically pass data from a previous node into a current node. (5 Marks)  '] }}",
+        "options": {
+          "systemMessage": "=You are an Expert n8n Automation Instructor and Certified Exam Evaluator.\n\nYour ONLY task is to grade a student's certification exam for the \"n8n Course of\nAutomation\" and return a strict JSON result. You must follow these rules with zero\nexceptions.\n\nEXAM STRUCTURE:\n- 5 questions, each worth 5 marks. Total possible = 25 marks.\n- Passing criteria: Total score >= 15 out of 25 (60%) = PASS. Below 15 = FAIL.\n\nQUESTIONS AND EXPECTED CONCEPTS:\n\nQ1. Webhook Trigger vs Polling Trigger (5 Marks)\nExpected: Webhook Trigger = real-time, event-driven, listens for instant HTTP requests.\nPolling Trigger = checks source at set intervals for new data. Should also state when\nto prefer each (webhook for real-time apps/APIs; polling for sources without webhook\nsupport).\n\nQ2. Purpose of the Merge Node (5 Marks)\nExpected: Combines data from multiple input branches into one. Should correctly\nexplain at least two modes: Append (stacks all items), Keep Key Matches (merges on\nmatching field), Multiplex/Combine (pairs items positionally).\n\nQ3. Data Pinning (5 Marks)\nExpected: Locks/freezes a node's output data during testing so the workflow doesn't\nre-execute or re-call APIs every time, speeding up debugging and iteration.\n\nQ4. Handling Node Errors / On Error Settings (5 Marks)\nExpected: Mentions \"On Error\" options: Stop Workflow (default, halts on error),\nContinue (proceeds despite error), Continue Using Error Output (routes error to a\nseparate branch for custom handling).\n\nQ5. Expressions in n8n (5 Marks)\nExpected: Explains expressions allow dynamic data referencing between nodes using\ndouble-curly-brace notation. Includes a valid example such as double-curly-brace\ndollar-json-dot-fieldName, or double-curly-brace dollar-node bracket NodeName\nbracket dot json bracket field bracket.\n\nSTRICT GRADING RULES (follow exactly, no exceptions):\n1. Grade each answer ONLY on technical accuracy and relevance to the expected concept\n   above. Ignore grammar, spelling, and writing style completely.\n2. Award partial marks (0, 1, 2, 3, 4, or 5) based on how much of the expected concept\n   is correctly present. Never award marks for content unrelated to the question.\n3. If an answer field is missing, empty, null, undefined, whitespace-only, random\n   characters, or clearly not a genuine attempt (e.g. \"dfds\", \"asdf\", \"test\", \"idk\"),\n   you MUST assign exactly 0 for that question. Never guess or infer intent.\n4. If any answer field is missing entirely from the input, treat it as 0 marks --\n   do NOT throw an error, do NOT ask for clarification, and do NOT stop. Always\n   produce a complete result using 0 for any missing/invalid answer.\n5. total_score must always equal the exact sum of q1_score through q5_score. Never\n   estimate or round this -- recompute it every time before outputting.\n6. result must be exactly PASS if total_score >= 15, otherwise exactly FAIL.\n   Never use any other value for this field.\n7. feedback must be a single plain sentence, no line breaks, no special characters\n   that could break JSON (no unescaped quotes).\n\nOUTPUT RULES (critical -- follow exactly):\n- Return ONLY a single valid JSON object. Nothing else.\n- Do NOT include markdown code fences.\n- Do NOT include any explanation, preamble, apology, or commentary before or after\n  the JSON.\n- Do NOT include trailing commas, comments, or any text outside the JSON braces.\n- All keys and string values must use double quotes, matching valid JSON syntax\n  exactly.\n- All numeric fields (q1_score to total_score) must be plain numbers, not strings.\n- If you are ever unsure how to grade an answer, default to the lowest reasonable\n  score rather than producing invalid output or refusing to answer.\n- Under no circumstances should you output anything other than the JSON object\n  described below. This includes cases of incomplete input, unclear questions, or\n  ambiguous answers -- always still return valid JSON with your best-effort grading.\n\nREQUIRED OUTPUT FORMAT (exact structure, always -- example shown as plain field list):\nq1_score: number from 0 to 5\nq2_score: number from 0 to 5\nq3_score: number from 0 to 5\nq4_score: number from 0 to 5\nq5_score: number from 0 to 5\ntotal_score: number from 0 to 25\nresult: the word PASS or the word FAIL\nfeedback: one short plain sentence summarizing overall performance\n\nAlways format your final answer as a JSON object using these exact field names as\nkeys, with double quotes around all keys and string values, and plain numbers for\nall score fields."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        848,
+        -272
+      ],
+      "id": "b2562246-0922-496b-bfe0-6ee012377d80",
+      "name": "Evaluator of Exam"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        192
+      ],
+      "id": "322ccd8e-f72e-4b1f-a1d9-c3ec693890e4",
+      "name": "Teacher",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "uB5m3edgbbxkqKsU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - Run Once for All Items\n\nconst results = [];\n\nfor (const item of $input.all()) {\n  const data = item.json;\n\n  // Parse date - supports \"DD-MM-YYYY\" or \"DD-MM-YY\"\n  const dateStr = data.Date;\n  const parts = dateStr.split(\"-\");\n\n  let day = parseInt(parts[0], 10);\n  let month = parseInt(parts[1], 10) - 1; // JS months are 0-indexed\n  let year = parseInt(parts[2], 10);\n\n  // Handle 2-digit year (e.g. \"26\" -> 2026)\n  if (year < 100) {\n    year += 2000;\n  }\n\n  const enrollmentDate = new Date(year, month, day);\n  const today = new Date();\n\n  // Calculate days elapsed\n  const diffTime = today.getTime() - enrollmentDate.getTime();\n  const daysElapsed = Math.floor(diffTime / (1000 * 60 * 60 * 24));\n\n  const isEligible = daysElapsed >= 30;\n  const eligibility = isEligible ? \"eligible\" : \"ineligible\";\n\n  let reason;\n  if (isEligible) {\n    reason = `Day ${daysElapsed} - 30 day period completed`;\n  } else {\n    const remainingDays = 30 - daysElapsed;\n    reason = `Day ${daysElapsed} - ${remainingDays} day(s) remaining`;\n  }\n\n  results.push({\n    json: {\n      ...data,\n      daysElapsed: daysElapsed,\n      enrollmentDate: enrollmentDate.toDateString(),\n      eligibility: eligibility,\n      reason: reason\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -336
+      ],
+      "id": "4e7aabbf-20ca-4c88-a791-7d8a33a57a44",
+      "name": "Checking 30 days"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f99ba2cf-6204-42af-8207-d96f034fac0e",
+              "leftValue": "={{ $('Responses (new)').item.json.Email }}",
+              "rightValue": "={{ $json.Email }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -64,
+        -320
+      ],
+      "id": "8cdd0782-b39b-4e6c-883c-53836268f855",
+      "name": "30 days"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -704,
+        -320
+      ],
+      "id": "9c986527-6aa8-4808-9aac-4888ea2054b0",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc",
+          "mode": "list",
+          "cachedResultName": "STUDENT DATA TRCAK",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $('Get row(s) in sheet').item.json.Date }}",
+            "Student name": "={{ $('Get row(s) in sheet').item.json[\"Student name\"] }}",
+            "Contact": "={{ $('Get row(s) in sheet').item.json.Contact }}",
+            "Amount": "={{ $('Get row(s) in sheet').item.json.Email }}",
+            "Test Clearnce": "={{ $('Fetching readble results').item.json.result }}",
+            "Email": "={{ $('Get row(s) in sheet').item.json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Student name",
+              "displayName": "Student name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Test Clearnce",
+              "displayName": "Test Clearnce",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2256,
+        -256
+      ],
+      "id": "cf111b01-e3a6-45d1-b23a-e85fbe44a195",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a6XNf9rh3QD2SUn6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e097e15d-d900-4a8e-a3d9-73ac56334ec2",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "PASS",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1616,
+        32
+      ],
+      "id": "0b1e14e0-f14b-42b6-8dac-2685e3230c93",
+      "name": "Exam Fail Pass Process"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Responses (new)').item.json.Email }}",
+        "subject": "Retake-Exam Update",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Exam Result - Re-attempt Information</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background-color:#111827; padding:40px 30px; text-align:center;\">\n              <p style=\"color:#9CA3AF; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                n8n Course of Automation\n              </p>\n              <h1 style=\"color:#ffffff; font-size:26px; margin:0; font-weight:700;\">\n                Your Exam Result\n              </h1>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:40px 40px 10px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>{{$('Get row(s) in sheet').item.json['Student name']  }}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Thank you for taking your certification exam for the\n                <strong style=\"color:#111827;\">n8n Course of Automation</strong>. After careful\n                evaluation, we're sorry to let you know that you didn't meet the passing criteria\n                this time.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 25px;\">\n                Don't worry — this is simply a checkpoint, not the end of the road. Many\n                successful automation engineers needed more than one attempt to master these\n                concepts, and you're absolutely capable of getting there.\n              </p>\n            </td>\n          </tr>\n\n          <!-- Re-exam Card -->\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#FEF2F2; border:1px solid #FECACA; border-radius:10px; padding:26px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:13px; color:#B91C1C; margin:0 0 8px; text-transform:uppercase; letter-spacing:1px; font-weight:700;\">\n                      Re-attempt Available In\n                    </p>\n                    <p style=\"font-size:34px; color:#DC2626; margin:0; font-weight:800;\">\n                      4 Days\n                    </p>\n                    <p style=\"font-size:13px; color:#991B1B; margin:10px 0 0;\">\n                      A new exam link will be sent to you once your re-attempt window opens\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Preparation Tips -->\n          <tr>\n            <td style=\"padding:30px 40px 5px;\">\n              <p style=\"font-size:15px; color:#111827; margin:0 0 15px; font-weight:600;\">\n                To prepare for your next attempt, we recommend:\n              </p>\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    📘 Revisit the course lessons, especially triggers, error handling, and expressions\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    🛠️ Practice building small workflows hands-on in n8n\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    💬 Ask questions in the WhatsApp group — we're happy to help\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- CTA -->\n          <tr>\n            <td style=\"padding:30px 40px; text-align:center;\">\n              <a href=\"https://chat.whatsapp.com/C5ksQ7Llj604oXUh9Uhao1\" target=\"_blank\"\n                 style=\"background-color:#111827; color:#ffffff; text-decoration:none; font-size:15px; font-weight:600; padding:14px 40px; border-radius:8px; display:inline-block;\">\n                Ask a Question in the Group\n              </a>\n            </td>\n          </tr>\n\n          <!-- Closing -->\n          <tr>\n            <td style=\"padding:0 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                We believe in your potential, and we're rooting for your success on the next\n                attempt. Keep practicing, and you'll get there.\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:20px 0 0; font-weight:600;\">\n                Stay motivated — see you at the re-exam! 💪\n              </p>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This email was sent because you attempted the certification exam for the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Amara Academy"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        288
+      ],
+      "id": "c5a4bfca-ab59-4dd7-8b8b-0e66eab7cae4",
+      "name": "Final Result To student1",
+      "webhookId": "657fc833-5609-4255-ac67-50c6c28f5bb8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "z0N51BR4F2xRJHhw",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/z0N51BR4F2xRJHhw",
+          "cachedResultName": "generatte certificate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1936,
+        16
+      ],
+      "id": "bbc1e578-d81c-4c75-a013-901a95add960",
+      "name": "Call 'generatte certificate'"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Responses (new)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "30 days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eligible/Not": {
+      "main": [
+        [
+          {
+            "node": "Evaluator of Exam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "optmising result": {
+      "main": [
+        [
+          {
+            "node": "Final Result To student",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetching readble results": {
+      "main": [
+        [
+          {
+            "node": "optmising result",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Exam Fail Pass Process",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluator of Exam": {
+      "main": [
+        [
+          {
+            "node": "Fetching readble results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Teacher": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Evaluator of Exam",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checking 30 days": {
+      "main": [
+        [
+          {
+            "node": "Eligible/Not",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "30 days": {
+      "main": [
+        [
+          {
+            "node": "Checking 30 days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Result To student": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exam Fail Pass Process": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Final Result To student1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a01084c7-9ea3-4b9a-a946-340fe0df05bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c6edab71d333db64187d2c8c927719069353a651482267292d6af4e916c518c1"
+  },
+  "nodeGroups": [],
+  "id": "r8ZAbkgqOD60aaG4",
+  "tags": []
+}

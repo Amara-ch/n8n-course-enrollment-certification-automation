@@ -1,0 +1,144 @@
+{
+  "name": "generatte certificate",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        -256
+      ],
+      "id": "fe555883-a37d-465c-9b04-1e9f1b864c49",
+      "name": "Certificate information"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "713ebc22-73ce-4805-9e6e-f895e90945f8",
+              "name": "StudentName",
+              "value": "={{ $json.StudentName }}",
+              "type": "string"
+            },
+            {
+              "id": "00f9ce1c-595d-4082-a2b2-c0f3d73369a2",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "7eff9547-9ec4-4d44-abc9-afd43f6d9e6c",
+              "name": "result",
+              "value": "={{ $json.result }}",
+              "type": "string"
+            },
+            {
+              "id": "2fcc1621-5fdd-49bd-8b28-f4f024303353",
+              "name": "feedback",
+              "value": "={{ $json.feedback }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -992,
+        -256
+      ],
+      "id": "f153c422-8ec2-464d-a45d-699c80ffb997",
+      "name": "Feild for certification"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Certification Of Success",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Congratulations - You Passed!</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background-color:#111827; padding:45px 30px; text-align:center;\">\n              <p style=\"color:#9CA3AF; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                n8n Course of Automation\n              </p>\n              <h1 style=\"color:#ffffff; font-size:28px; margin:0; font-weight:700; letter-spacing:-0.3px;\">\n                Congratulations, You Passed! 🎉\n              </h1>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:40px 40px 10px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>{{  $json.StudentName}}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Congratulations! We're thrilled to let you know that you've successfully passed\n                your certification exam for the\n                <strong style=\"color:#111827;\">n8n Course of Automation</strong>. This is a\n                fantastic achievement, and you should be really proud of yourself.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 25px;\">\n                Your hard work, consistency, and dedication have paid off. You're now officially\n                a certified automation practitioner!\n              </p>\n            </td>\n          </tr>\n\n          <!-- Certificate Card with Download Button -->\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ECFDF5; border:1px solid #A7F3D0; border-radius:10px; padding:32px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:40px; margin:0 0 12px;\">🏆</p>\n                    <p style=\"font-size:13px; color:#065F46; margin:0 0 6px; text-transform:uppercase; letter-spacing:1px; font-weight:700;\">\n                      Certification Status\n                    </p>\n                    <p style=\"font-size:28px; color:#059669; margin:0 0 20px; font-weight:800;\">\n                      PASSED\n                    </p>\n                    <a href=\"{{ $json.certificateUrl }}\" target=\"_blank\"\n                       style=\"background-color:#059669; color:#ffffff; text-decoration:none; font-size:15px; font-weight:700; padding:14px 40px; border-radius:8px; display:inline-block;\">\n                      Download Your Certificate\n                    </a>\n                    <p style=\"font-size:12px; color:#065F46; margin:16px 0 0;\">\n                      Click above to download your official certificate of completion.\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Closing -->\n          <tr>\n            <td style=\"padding:30px 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Thank you for your commitment throughout this course. We're excited to see how\n                you apply your new automation skills in real-world projects.\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:20px 0 0; font-weight:600;\">\n                Once again, congratulations — well deserved! 🚀\n              </p>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This email was sent because you completed the certification exam for the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Amara Academy"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -752,
+        -256
+      ],
+      "id": "449e67ad-9751-41bd-a92e-e300a7e21398",
+      "name": "Send a message",
+      "webhookId": "c84eb39c-7f53-417c-8380-6587567b544b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Certificate information": [
+      {
+        "json": {
+          "StudentName": "Amara Tariq",
+          "Email": "amaratariq9494@gmail.com",
+          "q1_score": 0,
+          "q2_score": 0,
+          "q3_score": 0,
+          "q4_score": 0,
+          "q5_score": 0,
+          "total_score": 0,
+          "result": "FAIL",
+          "feedback": "The student failed to provide valid answers for all questions resulting in a total score of zero."
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Certificate information": {
+      "main": [
+        [
+          {
+            "node": "Feild for certification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Feild for certification": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "06874886-483f-44c4-97cb-c01a2c0f5e7b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c6edab71d333db64187d2c8c927719069353a651482267292d6af4e916c518c1"
+  },
+  "nodeGroups": [],
+  "id": "z0N51BR4F2xRJHhw",
+  "tags": []
+}

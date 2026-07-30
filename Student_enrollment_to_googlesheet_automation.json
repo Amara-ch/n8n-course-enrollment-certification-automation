@@ -1,0 +1,719 @@
+{
+  "name": "Student enrollment to googlesheet automation",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "course Entitled",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Contact",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Amount",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -544,
+        -160
+      ],
+      "id": "ec1d23fa-4986-4ffb-a03d-afa79397f0f2",
+      "name": "On form submission",
+      "webhookId": "5ae6da67-4a99-4750-b5b4-c573e872f5a5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b11c7a96-220a-4c8f-bab0-10e8e2a17313",
+              "name": "Name",
+              "value": "={{ $json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "32d75c3b-cdd3-4b7b-979b-b691678759ac",
+              "name": "Contact",
+              "value": "={{ $json.Contact }}",
+              "type": "number"
+            },
+            {
+              "id": "ae80139b-7622-4217-b3f0-713fbb0090bc",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "cec38b1b-f12c-452f-a318-50fced2c3529",
+              "name": "Amount",
+              "value": "={{ $json.Amount }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        -160
+      ],
+      "id": "473b5a7e-43bf-469f-99c7-1bf45e7d2537",
+      "name": "organize data"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc",
+          "mode": "list",
+          "cachedResultName": "STUDENT DATA TRCAK",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Student name": "={{ $json.Name }}",
+            "Contact": "={{ $json.Contact }}",
+            "Email": "={{ $json.Email }}",
+            "Amount": "={{ $json.Amount }}",
+            "Date": "={{ $now.format('dd-MM-yyyy') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Student name",
+              "displayName": "Student name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        -80
+      ],
+      "id": "9170aed8-f3b3-4f5a-a74b-7d45b06cd1dc",
+      "name": "Student Enrollments Details",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a6XNf9rh3QD2SUn6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "course Entitled",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Contact",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Amount",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -256,
+        -480
+      ],
+      "id": "050c77f8-8dd3-4ff6-b809-2577a716959a",
+      "name": "On form submission1",
+      "webhookId": "cc894e9b-fbeb-4e26-93f0-76057a0ad380"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b11c7a96-220a-4c8f-bab0-10e8e2a17313",
+              "name": "Name",
+              "value": "={{ $json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "32d75c3b-cdd3-4b7b-979b-b691678759ac",
+              "name": "Contact",
+              "value": "={{ $json.Contact }}",
+              "type": "number"
+            },
+            {
+              "id": "ae80139b-7622-4217-b3f0-713fbb0090bc",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "cec38b1b-f12c-452f-a318-50fced2c3529",
+              "name": "Amount",
+              "value": "={{ $json.Amount }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        -480
+      ],
+      "id": "051f56c6-5356-432e-978f-1bd9a25ef3c3",
+      "name": "organize data1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc",
+          "mode": "list",
+          "cachedResultName": "STUDENT DATA TRCAK",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Student name": "={{ $json.Name }}",
+            "Contact": "={{ $json.Contact }}",
+            "Email": "={{ $json.Email }}",
+            "Amount": "={{ $json.Amount }}",
+            "Date": "={{ $now.format('dd-MM-yyyy') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Student name",
+              "displayName": "Student name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        -480
+      ],
+      "id": "e0baf909-96d8-440c-b9f3-acfd67912bf0",
+      "name": "Student Enrollments Details1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a6XNf9rh3QD2SUn6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Your n8n Course Enrollment Is Confirmed!",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Welcome Email</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background-color:#111827; padding:45px 30px; text-align:center;\">\n              <p style=\"color:#9CA3AF; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                Enrollment Confirmed\n              </p>\n              <h1 style=\"color:#ffffff; font-size:28px; margin:0; font-weight:700; letter-spacing:-0.3px;\">\n                Welcome to the n8n Course of Automation\n              </h1>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:40px 40px 15px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>{{ $json.Name }}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Congratulations, and welcome! We're delighted to have you join the\n                <strong style=\"color:#111827;\">n8n Course of Automation</strong>. Enrolling is a\n                great step forward, and we're glad you're taking it with us.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 25px;\">\n                You are now officially part of our learning community, and our team is here to\n                support you at every stage of this journey.\n              </p>\n            </td>\n          </tr>\n\n          <!-- WhatsApp Card -->\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#F9FAFB; border:1px solid #E5E7EB; border-radius:10px; padding:28px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:15px; color:#111827; margin:0 0 20px; font-weight:600;\">\n                      Join Your Course Community Group\n                    </p>\n                    <a href=\"https://chat.whatsapp.com/C5ksQ7Llj604oXUh9Uhao1\" target=\"_blank\"\n                       style=\"background-color:#111827; color:#ffffff; text-decoration:none; font-size:15px; font-weight:600; padding:14px 40px; border-radius:8px; display:inline-block;\">\n                      Join WhatsApp Group\n                    </a>\n                    <p style=\"font-size:13px; color:#6B7280; margin:18px 0 0; line-height:1.6;\">\n                      All future announcements, resources, and updates will be shared here first.\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Info Note -->\n          <tr>\n            <td style=\"padding:30px 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                <strong style=\"color:#111827;\">Please note:</strong> your 30-day learning period\n                officially begins from your date of enrollment. We'd encourage you to get started\n                as soon as possible to make the most of your access.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                We believe in your ability to learn, grow, and succeed, and we look forward to\n                supporting you throughout this experience.\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:25px 0 0; font-weight:600;\">\n                Welcome once again, and happy learning.\n              </p>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This email was sent because you enrolled in the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        144,
+        112
+      ],
+      "id": "717907eb-fad9-4a69-8645-f56061fae20d",
+      "name": "Html email to optimise email",
+      "webhookId": "6c93f33c-0ff7-43a4-9fd8-51d388770f71",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 25,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        352
+      ],
+      "id": "172804a7-09e7-4152-a201-dee0755892fc",
+      "name": "25 Days wait",
+      "webhookId": "f70637d4-3d54-4257-a0f1-cebe638ab5bc"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "Reminder of Exam of Certification",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Exam Reminder</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background-color:#B45309; padding:40px 30px; text-align:center;\">\n              <p style=\"color:#FDE9C9; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                Reminder\n              </p>\n              <h1 style=\"color:#ffffff; font-size:26px; margin:0; font-weight:700; letter-spacing:-0.3px;\">\n                Your Certification Exam is Coming Up\n              </h1>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:40px 40px 10px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>{{$('On form submission').item.json.Name }}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 20px;\">\n                This is a quick reminder that your <strong style=\"color:#111827;\">n8n Course of Automation</strong>\n                certification exam is just around the corner. You're now on\n                <strong style=\"color:#111827;\">Day 25 of your 30-day learning period</strong> —\n                only 5 days remain before your exam window closes.\n              </p>\n            </td>\n          </tr>\n\n          <!-- Countdown / Highlight Card -->\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#FFFBEB; border:1px solid #FDE68A; border-radius:10px; padding:26px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:13px; color:#92400E; margin:0 0 6px; text-transform:uppercase; letter-spacing:1px; font-weight:700;\">\n                      Days Remaining\n                    </p>\n                    <p style=\"font-size:38px; color:#B45309; margin:0; font-weight:800;\">\n                      5 Days\n                    </p>\n                    <p style=\"font-size:13px; color:#92400E; margin:8px 0 0;\">\n                      Exam access closes at the end of Day 30\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Checklist -->\n          <tr>\n            <td style=\"padding:30px 40px 5px;\">\n              <p style=\"font-size:15px; color:#111827; margin:0 0 15px; font-weight:600;\">\n                Before your exam, make sure to:\n              </p>\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    ✅ Complete all remaining course lessons\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    ✅ Revise key workflow-building and automation concepts\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    ✅ Practice building at least one end-to-end n8n workflow\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    ✅ Post any questions in the WhatsApp group before the deadline\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- CTA Button -->\n          <tr>\n            <td style=\"padding:30px 40px; text-align:center;\">\n              <a href=\"https://chat.whatsapp.com/C5ksQ7Llj604oXUh9Uhao1\" target=\"_blank\"\n                 style=\"background-color:#111827; color:#ffffff; text-decoration:none; font-size:15px; font-weight:600; padding:14px 40px; border-radius:8px; display:inline-block;\">\n                Ask a Question in the Group\n              </a>\n            </td>\n          </tr>\n\n          <!-- Closing -->\n          <tr>\n            <td style=\"padding:0 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                You've put in solid effort so far — a little revision now will make all the\n                difference on exam day. We're rooting for you!\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:20px 0 0; font-weight:600;\">\n                All the best for your certification exam. 🚀\n              </p>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This reminder was sent because you enrolled in the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        352
+      ],
+      "id": "d86881c7-0098-4002-aa48-ea3a9c65cfda",
+      "name": "Send a message",
+      "webhookId": "868c706f-4d92-42f8-9479-b71e7e9737dd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        560
+      ],
+      "id": "a7382968-f416-41be-b9f2-dbc04b21d601",
+      "name": "5 Days Delay",
+      "webhookId": "46c6ad16-807c-47ea-a6de-d7a6b557252d"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Your n8n Course Enrollment Is Confirmed!",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Welcome Email</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background-color:#111827; padding:45px 30px; text-align:center;\">\n              <p style=\"color:#9CA3AF; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                Enrollment Confirmed\n              </p>\n              <h1 style=\"color:#ffffff; font-size:28px; margin:0; font-weight:700; letter-spacing:-0.3px;\">\n                Welcome to the n8n Course of Automation\n              </h1>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:40px 40px 15px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>{{ $json.Name }}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Congratulations, and welcome! We're delighted to have you join the\n                <strong style=\"color:#111827;\">n8n Course of Automation</strong>. Enrolling is a\n                great step forward, and we're glad you're taking it with us.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 25px;\">\n                You are now officially part of our learning community, and our team is here to\n                support you at every stage of this journey.\n              </p>\n            </td>\n          </tr>\n\n          <!-- WhatsApp Card -->\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#F9FAFB; border:1px solid #E5E7EB; border-radius:10px; padding:28px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:15px; color:#111827; margin:0 0 20px; font-weight:600;\">\n                      Join Your Course Community Group\n                    </p>\n                    <a href=\"https://chat.whatsapp.com/C5ksQ7Llj604oXUh9Uhao1\" target=\"_blank\"\n                       style=\"background-color:#111827; color:#ffffff; text-decoration:none; font-size:15px; font-weight:600; padding:14px 40px; border-radius:8px; display:inline-block;\">\n                      Join WhatsApp Group\n                    </a>\n                    <p style=\"font-size:13px; color:#6B7280; margin:18px 0 0; line-height:1.6;\">\n                      All future announcements, resources, and updates will be shared here first.\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Info Note -->\n          <tr>\n            <td style=\"padding:30px 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                <strong style=\"color:#111827;\">Please note:</strong> your 30-day learning period\n                officially begins from your date of enrollment. We'd encourage you to get started\n                as soon as possible to make the most of your access.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                We believe in your ability to learn, grow, and succeed, and we look forward to\n                supporting you throughout this experience.\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:25px 0 0; font-weight:600;\">\n                Welcome once again, and happy learning.\n              </p>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This email was sent because you enrolled in the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -80
+      ],
+      "id": "747008be-da5a-43ee-9202-e54998533c23",
+      "name": "Html email to optimise email1",
+      "webhookId": "6c93f33c-0ff7-43a4-9fd8-51d388770f71",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc",
+          "mode": "list",
+          "cachedResultName": "STUDENT DATA TRCAK",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TMpoIXS1diWoJ14WKyY21NsbdiyVIa1Sgy5Rbszw-Nc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Student name": "={{ $json.Name }}",
+            "Contact": "={{ $json.Contact }}",
+            "Email": "={{ $json.Email }}",
+            "Amount": "={{ $json.Amount }}",
+            "Date": "={{ $now.format('dd-MM-yyyy') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Student name",
+              "displayName": "Student name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        112
+      ],
+      "id": "f27c22a7-209a-46ab-8075-712ce5783a8e",
+      "name": "Student Enrollments Details2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a6XNf9rh3QD2SUn6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "Final Exam Day ",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Certification Exam Invitation</title>\n</head>\n<body style=\"margin:0; padding:0; background-color:#eef0f4; font-family: 'Segoe UI', Arial, sans-serif;\">\n\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef0f4; padding:50px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(17,17,17,0.08);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background-color:#111827; padding:45px 30px; text-align:center;\">\n              <p style=\"color:#9CA3AF; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin:0 0 12px; font-weight:600;\">\n                Certification Exam\n              </p>\n              <h1 style=\"color:#ffffff; font-size:28px; margin:0; font-weight:700; letter-spacing:-0.3px;\">\n                It's Time to Take Your Exam 🎓\n              </h1>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:40px 40px 10px;\">\n              <p style=\"font-size:16px; color:#111827; margin:0 0 20px;\">\n                Hi <strong>{{ $('On form submission').item.json.Name }}</strong>,\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Congratulations on reaching the final milestone of the\n                <strong style=\"color:#111827;\">n8n Course of Automation</strong>! Over the past\n                30 days, you've learned to build powerful automation workflows — and now it's time\n                to put that knowledge to the test.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 25px;\">\n                Your certification exam is now live. Click the button below whenever you're ready\n                to begin.\n              </p>\n            </td>\n          </tr>\n\n          <!-- Exam Card -->\n          <tr>\n            <td style=\"padding:0 40px;\">\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#F9FAFB; border:1px solid #E5E7EB; border-radius:10px; padding:30px; text-align:center;\">\n                <tr>\n                  <td>\n                    <p style=\"font-size:15px; color:#111827; margin:0 0 20px; font-weight:600;\">\n                      Your Certification Exam is Ready\n                    </p>\n                    <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSceq5cfbxEAZjMLBd3yYBCRuYtvijZpjnAYUkW7KsMo0U5F-g/viewform?usp=publish-editor\" target=\"_blank\"\n                       style=\"background-color:#111827; color:#ffffff; text-decoration:none; font-size:16px; font-weight:700; padding:16px 44px; border-radius:8px; display:inline-block;\">\n                      Start Your Exam\n                    </a>\n                    <p style=\"font-size:13px; color:#6B7280; margin:18px 0 0; line-height:1.6;\">\n                      Please complete the exam in one sitting for the best experience.\n                    </p>\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Guidelines -->\n          <tr>\n            <td style=\"padding:30px 40px 5px;\">\n              <p style=\"font-size:15px; color:#111827; margin:0 0 15px; font-weight:600;\">\n                Before you begin, please note:\n              </p>\n              <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    📌 Ensure a stable internet connection before starting\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    📌 Set aside uninterrupted time to complete the exam\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    📌 Answer to the best of your understanding of course concepts\n                  </td>\n                </tr>\n                <tr>\n                  <td style=\"padding:6px 0; font-size:14px; color:#4B5563; line-height:1.7;\">\n                    📌 Reach out in the WhatsApp group if you face any issues\n                  </td>\n                </tr>\n              </table>\n            </td>\n          </tr>\n\n          <!-- Closing -->\n          <tr>\n            <td style=\"padding:30px 40px 10px;\">\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                You've worked hard to get here, and we're confident you're ready for this. Take a\n                deep breath, trust your preparation, and give it your best shot.\n              </p>\n              <p style=\"font-size:15px; color:#4B5563; line-height:1.8; margin:0 0 18px;\">\n                Once you submit your exam, your <strong style=\"color:#111827;\">result and\n                certificate will be delivered within 3 hours</strong> — so keep an eye on your inbox!\n              </p>\n              <p style=\"font-size:15px; color:#111827; margin:20px 0 0; font-weight:600;\">\n                Best of luck on your certification exam! 🚀\n              </p>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"padding:35px 40px; border-top:1px solid #E5E7EB; text-align:center;\">\n              <p style=\"font-size:14px; color:#111827; margin:0; font-weight:600;\">\n                Warm regards\n              </p>\n            </td>\n          </tr>\n\n        </table>\n\n        <p style=\"font-size:12px; color:#9CA3AF; margin-top:22px;\">\n          This email was sent because you enrolled in the n8n Course of Automation.\n        </p>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        560
+      ],
+      "id": "1431a959-d2db-42cc-b4a7-90f9dc0a9120",
+      "name": "Final exam email",
+      "webhookId": "868c706f-4d92-42f8-9479-b71e7e9737dd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YdwqNI9K7j9fbRoY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0BLMGQUXPW",
+          "mode": "list",
+          "cachedResultName": "enrollments"
+        },
+        "text": "=🚀 *New Enrollment Alert!*\n\n👤 *Name:* {{ $('On form submission').item.json.Name }}\n📧 *Email:* {{  $('On form submission').item.json.Email}}\n📞 *Phone:* {{$('On form submission').item.json.Contact }}\n💰 *Amount Paid:* Rs{{$('On form submission').item.json.Amount}}\n\n✅ Student has been successfully enrolled. Please update your records accordingly.",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.5,
+      "position": [
+        112,
+        -288
+      ],
+      "id": "1a4f0e1d-f90f-4222-9d5f-2c67cc423d16",
+      "name": "Notify Team on slack",
+      "webhookId": "cad7eada-6817-48c3-a998-26ff564fc95d",
+      "credentials": {
+        "slackApi": {
+          "id": "EmZZWMerqDKBypcF",
+          "name": "Slack account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "organize data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "organize data": {
+      "main": [
+        [
+          {
+            "node": "Student Enrollments Details",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Html email to optimise email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "25 Days wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "5 Days Delay",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Team on slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "organize data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "organize data1": {
+      "main": [
+        [
+          {
+            "node": "Student Enrollments Details1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "25 Days wait": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Student Enrollments Details": {
+      "main": [
+        [
+          {
+            "node": "Html email to optimise email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Html email to optimise email": {
+      "main": [
+        [
+          {
+            "node": "Student Enrollments Details2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5 Days Delay": {
+      "main": [
+        [
+          {
+            "node": "Final exam email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "94e2d7bc-ffcf-44fd-9f85-8becb870834e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c6edab71d333db64187d2c8c927719069353a651482267292d6af4e916c518c1"
+  },
+  "nodeGroups": [],
+  "id": "cLLLVLHDBPoBiqjC",
+  "tags": []
+}
